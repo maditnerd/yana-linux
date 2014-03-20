@@ -4,13 +4,13 @@ This script manages vocal recognition for YANA
 This heavily uses Google API so you need a internet connection
 
 You should be advice that you are sending short portion of audio recording to Google
-and is in no way support by Google.
+This programs is also not support by Google.
 
 By Sarrailh Remi Gplv3
 https://github.com/maditnerd/yanapi
 """
 import ConfigParser
-import urllib
+import urllib2
 import json
 import os
 import sys
@@ -131,7 +131,7 @@ banner("Reading Configuration File")
 
 try:
 	ip = settings.get("yana","ip") #IP Address of the Raspberry Pi
-	ssl = settings.get("yana","ssl")
+	ssl = str2bool(settings.get("yana","ssl")) #HTTP/HTTPS ?
 	url = settings.get("yana","url") #URL of Yana
 	token = settings.get("yana","token") #YANA Token
 	tolerance = float(settings.get("recognition","tolerance")) #Tolerance (Lower confidence of YANA)
@@ -145,12 +145,17 @@ except ConfigParser.NoOptionError, e:
 	fatalerror("yana.cfg is corrupted")
 
 """ Get Commands from YANA """
-banner("Connecting to "+ip+"/"+url)
+if (ssl):
+	url_begin = "https://"
+else:
+	url_begin = "http://"
+
+banner("Connecting to " + url_begin + ip + "/" +url)
 
 #Building URL to query commands
-command_list_commands = "http://"+ip+"/"+url+"/"+"action.php?action="+command+"&token="+token
+command_list_commands = url_begin+ip+"/"+url+"/action.php?action="+command+"&token="+token
 try:
-	json_commands = urllib.urlopen(command_list_commands).read() #Put all the command in an list
+	json_commands = urllib2.urlopen(command_list_commands).read() #Put all the command in an list
 #Handle invalid IP
 except IOError, e:
 	fatalerror("Invalid IP in yana.cfg")
@@ -176,6 +181,8 @@ for command in commands["commands"]:
 	print command["command"]
 	#Commands are converted in unicode (so we can compare them)
 	commands["commands"][i]["command"] = strip_accents(command["command"])
+	if(ssl):
+		commands["commands"][i]["url"] = command["url"].replace("http","https")
 	#Confidence level are converted in float (so we can compare them)
 	commands["commands"][i]["confidence"] = float(command["confidence"])
 	i = i + 1
@@ -183,6 +190,7 @@ for command in commands["commands"]:
 #At first launch we record silence to have a basic level
 banner("Recording Silence")
 output_volume_low = getvol()
+silence_volume = output_volume_low
 print "Volume:" + str(output_volume_low)
 
 playsound("ding.wav")
@@ -237,14 +245,14 @@ while 1:
 			action = best_result["url"]+"&token="+token
 			print action
 			#Send command to the YANA
-			json_response = urllib.urlopen(action).read()
+			json_response = urllib2.urlopen(action).read()
 			try:
 				response = json.loads(json_response)
 				if ("talk" in response["responses"][0]["type"]):
 					speak = response["responses"][0]["sentence"].encode("utf8","ignore")
 					banner_yellow("Response")
 					print speak
-					speak = urllib.quote(speak)
+					speak = urllib2.quote(speak)
 					text2speech(speak)
 				elif ("sound" in response["responses"][0]["type"]):
 					print response["responses"][0]["file"]
@@ -258,5 +266,8 @@ while 1:
 				banner_yellow("No Json Answer")
 		else:
 			banner_yellow("No Command Detected")
+
+		#Resetting volume to original silence volume
+		output_volume_low = silence_volume
 #except KeyError, e:
 #	fatalerror("Unknown Error")
