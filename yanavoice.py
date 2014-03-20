@@ -96,7 +96,11 @@ def playsound(name):
 #Record sound for duration and output volume
 def getvol():
 	volume = os.popen(path + "scripts/getvol.sh "+ duration).readlines()
-	volume = float(volume[0])
+	try:
+		volume = float(volume[0])
+	except ValueError:
+		os.system("arecord -l")
+		fatalerror("No Microphone detected / Bad Microphone Configuration")
 	return volume
 
 #Convert speech 2 text with Google API
