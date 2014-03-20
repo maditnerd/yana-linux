@@ -1,3 +1,4 @@
+#!/bin/sh
 #Get volume level of a audio file
 #Inspired by StevenHickson voice command code
 #Made by Sarrailh Remi
