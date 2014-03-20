@@ -35,6 +35,7 @@ Augmenter le volume (flèche vers le haut)
 ### Connexion à yana-server
 
 Toute la configuration se fait dans le fichier *yana.cfg*
+
 Adresse IP de votre Raspberry Pi (127.0.0.1 si vous utilise yana-linux sur le même raspberry pi que yana-server)
 * ip=127.0.0.1
 
@@ -64,9 +65,9 @@ Change la langue de la reconnaissance vocale / synthèse vocale
 * lang=fr
 
 Un son est émis lorsque la reconnaissance est prête (au premier lancement) et puis à chaque fois qu'une élévation de volume a été detecté. Ce son n'est là que pour les tests, et il est conseillé de le déactiver pour votre santé mentale.
-*beep=1
+* beep=1
 
 Active/Déactive la synthèse vocale
-*voice=1
+* voice=1
 
 
