@@ -57,6 +57,7 @@ def verify_files():
 	file_exists("/usr/bin/flac")
 	file_exists("/usr/bin/play")
 	file_exists("/usr/bin/mpg123")
+	file_exists("/usr/bin/arecord")
 
 #Convert a string to a boolean
 def str2bool(v):
@@ -243,7 +244,7 @@ while 1:
 			print "I understood : " + best_result["command"]
 			#Prepare the command with token
 			action = best_result["url"]+"&token="+token
-			print action
+			#print action
 			#Send command to the YANA
 			json_response = urllib2.urlopen(action).read()
 			try:
