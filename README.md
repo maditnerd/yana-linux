@@ -7,7 +7,10 @@ Yana client for Linux
 
 ### Copie de yana-linux (dans le répertoire courant)
 
-```` git clone http://github.com/maditnerd/yana-linux ````
+```` 
+sudo apt-get install git-core
+git clone http://github.com/maditnerd/yana-linux
+````
 
 ### Dependances
 ```` 
