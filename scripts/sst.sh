@@ -1,3 +1,4 @@
+#!/bin/sh
 #DaveConroy.com
 #10/29/13
 #Text 2 Speech with Google API
