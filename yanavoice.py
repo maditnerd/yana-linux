@@ -25,7 +25,7 @@ global lang
 """ 
 Constants 
 """
-command="GET_SPEECH_COMMAND"
+command="GET_REMOTE_COMMAND"
 config_file = "yana.cfg"
 
 """
