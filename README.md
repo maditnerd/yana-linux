@@ -9,7 +9,7 @@ Yana client for Linux/Raspberry Pi
 
 ```` 
 sudo apt-get install git-core
-git clone http://github.com/maditnerd/yana-linux
+git clone http://github.com/maditnerd/yana-linux -b en
 ````
 
 ### Dépendencies
