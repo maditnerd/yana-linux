@@ -12,7 +12,7 @@ sudo apt-get install git-core
 git clone http://github.com/maditnerd/yana-linux -b en
 ````
 
-### Dépendencies
+### Dependencies
 ```` 
 cd yana-linux
 sudo ./install.sh 
@@ -60,7 +60,7 @@ Audio level difference before vocal recognition is activated
 * maxlevel=3
 
 
-### Avancé
+### Avanced
 Modify the vocal recognition/ vocal synthesis language
 * lang=en
 
