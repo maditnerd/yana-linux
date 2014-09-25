@@ -5,11 +5,11 @@
 #stt.sh
 #Modified by Sarrailh Remi 03/18/2014
 
-#hardware="plughw:1,0"
-#duration="3"
-#lang="fr"
 sample_rate=16000
 lang=$1
-#duration=$2
-flac /dev/shm/noise.wav -f -0 --sample-rate $sample_rate -o /dev/shm/out.flac 1>/dev/shm/voice.log 2>/dev/shm/voice.log; wget -O - -o /dev/null --post-file /dev/shm/out.flac --header="Content-Type: audio/x-flac; rate=16000" http://www.google.com/speech-api/v1/recognize?lang="$lang" | sed -e 's/[{}]/''/g'| awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]; exit }' | awk -F: 'NR==3 { print $3; exit }'
+duration="3"
+hardware="plughw:1,0"
+
+flac /dev/shm/noise.wav -f --best --sample-rate 16000 -o /dev/shm/out.flac 1>/dev/shm/voice.log 2>/dev/shm/voice.log; curl -X POST --data-binary @/dev/shm/out.flac --user-agent 'Mozilla/5.0' --header 'Content-Type: audio/x-flac; rate=16000;' "https://www.google.com/speech-api/v2/recognize?output=json&lang=$lang&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw&client=Mozilla/5.0" | sed -e 's/[{}]/''/g' | awk -F":" '{print $4}' | awk -F"," '{print $1}' | tr -d '\n'
+rm /dev/shm/out.flac
 echo " "
