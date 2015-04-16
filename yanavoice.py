@@ -214,7 +214,7 @@ while 1:
 	#Reset last audio volume
 	output_volume_low = output_volume_high
 	#If volume is higher than usual we assume someone spoke
-	if (output_volume_variation > 3):
+	if (output_volume_variation >  int(maxlevel)):
 			
 		banner_green("Searching for commands")
 		playsound("ding.wav")
