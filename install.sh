@@ -1,20 +1,16 @@
-echo "---------------------"
-echo "Dependencies"
-echo "---------------------"
-sudo apt-get install python-levenshtein sox flac mpg123 git-core
+apt-get install python-pyaudio python3-pyaudio sox libatlas-base-dev python-pip
+pip install pyaudio
 
-echo "---------------------"
-echo "Settings Mic/Speakers"
-echo "---------------------"
-alsamixer
-scripts/tts.sh -l en "Installation finished"
-
-echo "---------------------"
-echo "Test Mic"
-echo "---------------------"
-echo "Press Enter when you are ready to test the mic"
-read
-
-arecord -D plughw:1,0 -d 3 -r 16000 -t wav /tmp/test.wav
-aplay /tmp/test.wav
-
+cat > ~/.asoundrc << EOF
+pcm.!default {
+  type asym
+   playback.pcm {
+     type plug
+     slave.pcm "hw:0,0"
+   }
+   capture.pcm {
+     type plug
+     slave.pcm "hw:1,0"
+   }
+}
+EOF
